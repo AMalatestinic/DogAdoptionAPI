@@ -1,0 +1,78 @@
+<%- include('partials/header'); -%>
+
+<body>
+  <div class="container">
+    <h2>🐶 Dogs</h1>
+    <div id="dog-list" class="dog-list">
+      <% dogs.forEach(dog => { %>
+      <div class="dog-card">
+        <h2 class="dog-name"><%= dog.name %></h2>
+        <p><strong>Description:</strong> <%= dog.description %></p>
+        <p>
+          <strong>Availability:</strong> <%= dog.isAdopted ? 'Adopted 😊' :
+          'Available' %>
+        </p>
+
+        <% if (dog.isAdopted && dog.thankYouMessage) { %>
+        <p class="thank-you">
+          <strong>"Thank you!" message: </strong><%= dog.thankYouMessage %>
+        </p>
+        <% } else if(user && user._id.toString() !==
+        dog.registeredBy.toString()){ %>
+
+        <a href="/adopt/<%= dog._id %>" class="adopt-btn">Adopt</a>
+        <% } %> <% if (user && user._id.toString() ===
+        dog.registeredBy.toString() && !dog.isAdopted) { %>
+        <button class="remove-btn" data-id="<%= dog._id %>">Remove</button>
+        <% } %>
+      </div>
+      <% }); %>
+    </div>
+
+    <div class="pagination-buttons">
+      <a
+        href="/?p=<%= page - 1 %>"
+        class="pagination-btn <%= page === 0 ? 'disabled' : 'enabled' %>"
+      >
+        Previous
+      </a>
+      <a
+        href="/?p=<%= page + 1 %>"
+        class="pagination-btn <%= dogs.length < 3 ? 'disabled' : 'enabled' %>"
+      >
+        Next
+      </a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const removeButtons = document.querySelectorAll(".remove-btn");
+
+      removeButtons.forEach((button) => {
+        button.addEventListener("click", async (e) => {
+          const dogId = button.getAttribute("data-id");
+          console.log(dogId);
+
+          try {
+            const res = await fetch(`/dogs/${dogId}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+
+            if (res.ok) {
+              window.location.reload(); // Reload the page to reflect the change
+            } else {
+              alert("Failed to remove the dog.");
+            }
+          } catch (err) {
+            console.error("Error:", err);
+            alert("An error occurred.");
+          }
+        });
+      });
+    });
+  </script>
+</body>

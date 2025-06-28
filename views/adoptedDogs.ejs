@@ -1,0 +1,37 @@
+<%- include('partials/header'); -%>
+
+<body>
+  <div>
+    <h1>Your adopted dogs</h1>
+    <div>
+      <% let hasAdoptedDogs = false; %> 
+      <% if (dogs.length > 0) { %>
+        <% dogs.forEach(dog => { %>
+          <div class="dog-card">
+            <h2 class="dog-name"><%= dog.name %></h2>
+            <p><strong>Description:</strong> <%= dog.description %></p>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p>No adopted dogs</p>
+      <% } %>
+    </div>
+
+    <div class="pagination-buttons">
+      <a
+        href="/adopted?p=<%= page - 1 %>"
+        class="pagination-btn <%= page === 0 ? 'disabled' : 'enabled' %>"
+        <%= page === 0 ? 'disabled' : '' %> 
+      >
+        Previous
+      </a>
+      <a
+        href="/adopted?p=<%= page + 1 %>"
+        class="pagination-btn <%= dogs.length < 3 ? 'disabled' : 'enabled' %>"
+        <%= dogs.length < 3 ? 'disabled' : '' %>
+      >
+        Next
+      </a>
+    </div>
+  </div>
+</body>

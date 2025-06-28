@@ -1,0 +1,26 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <nav>
+      <!--Navbar-->
+      <h1><a href="/">Dog Adoption</a></h1>
+      <ul>
+        <li><a href="/" class="btn">Home</a></li>
+        <li><a href="/register" class="btn">Register a dog</a></li>
+        <% if (user) { %>
+        <li><a href="/registered" class="btn">Your Registered Dogs</a></li>
+        <li><a href="/adopted" class="btn">Your Adopted Dogs</a></li>
+        <li><a href="/logout" class="btn">Log out</a></li>
+        <% } else { %>
+        <li><a href="/login" class="btn">Log in</a></li>
+        <li><a href="/signup" class="btn">Signup</a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </body>
+</html>

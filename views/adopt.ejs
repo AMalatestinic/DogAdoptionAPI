@@ -1,0 +1,11 @@
+<%- include('partials/header'); -%>
+
+<h2>Adopt <%= dog.name %></h2>
+<p><%= dog.description %></p>
+
+<form action="/adopt/<%= dog._id %>" method="POST">
+  <label for="message">Leave a thank-you message for the original owner:</label>
+  <br />
+  <textarea name="message" required rows="4" cols="40"></textarea><br />
+  <button type="submit">Confirm Adoption</button>
+</form>

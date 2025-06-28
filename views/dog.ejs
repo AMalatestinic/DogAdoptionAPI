@@ -1,0 +1,48 @@
+<%- include('partials/header'); -%>
+
+<div class="dog-profile">
+  <h2><%= dog.name %></h2>
+  <p><%= dog.description%></p>
+
+  <% if(!dog.isAdopted){ %>
+  <form id="adoptForm">
+    <label for="message">Thank you message to original owner</label><br />
+    <textarea name="message" rows="4" required></textarea><br /><br />
+    <button type="submit">Adopt</button>
+  </form>
+  <% }else{%>
+  <p><strong>This dog is alreayd adopted.</strong></p>
+  <% if(dog.thankYouMessage){%>
+  <p><em>Message to original owner:</em> "<%= dog.thankYouMessage %>"</p>
+  <%}%> <%}%>
+</div>
+
+<script>
+  const form = document.getElementById("adoptForm");
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = form.message.value;
+
+      try {
+        const res = await fetch(`/adopt/<%= dog._id %>`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert("Dog adopted! Thank you message sent.");
+          location.reload(); // reload to show updated status
+        } else {
+          alert(data.error || "Adoption failed.");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  }
+</script>

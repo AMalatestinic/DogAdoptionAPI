@@ -1,0 +1,49 @@
+<%- include('partials/header'); -%>
+
+<form>
+  <h2>Register A Dog</h2>
+  <label for="name">Dog Name:</label>
+  <input type="text" name="name" />
+  <div class="name error"></div>
+  <label for="description">Provide a brief description:</label>
+  <textarea name="description" required rows="4" cols="40"></textarea>
+  <div class="description error"></div>
+  <button>Register</button>
+</form>
+
+<script>
+  const form = document.querySelector("form");
+  const nameError = document.querySelector(".name.error");
+  const descriptionError = document.querySelector(".description.error");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    nameError.textContent = "";
+    descriptionError.textContent = "";
+
+    const name = form.name.value;
+    const description = form.description.value;
+    const isAdopted = false;
+
+    try {
+      const res = await fetch("/", {
+        method: "POST",
+        body: JSON.stringify({ name, description, isAdopted }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const data = await res.json();
+      console.log(data);
+      if (data.errors) {
+        nameError.textContent = data.errors.name;
+        descriptionError.textContent = data.errors.description;
+      }
+      if (data.insertedId) {
+        location.assign("/");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+</script>

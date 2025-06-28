@@ -1,0 +1,35 @@
+<%- include('partials/header'); -%>
+
+<body>
+  <div>
+    <h1>Your registered dogs</h1>
+    <div>
+      <% let hasRegisteredDogs = false; %> <% dogs.forEach(dog => { %> <% if
+      (user && dog.registeredBy && user._id.toString() ===
+      dog.registeredBy.toString()) { %>
+      <div class="dog-card">
+        <h2 class="dog-name"><%= dog.name %></h2>
+        <p><strong>Description:</strong> <%= dog.description %></p>
+      </div>
+      <% hasRegisteredDogs = true; %> <% } %> <% }) %> <% if
+      (!hasRegisteredDogs) { %>
+      <p>No registered dogs</p>
+      <% } %>
+    </div>
+
+    <div class="pagination-buttons">
+      <a
+        href="/registered?p=<%= page - 1 %>"
+        class="pagination-btn <%= page === 0 ? 'disabled' : 'enabled' %>"
+      >
+        Previous
+      </a>
+      <a
+        href="/registered?p=<%= page + 1 %>"
+        class="pagination-btn <%= dogs.length < 3 ? 'disabled' : 'enabled' %>"
+      >
+        Next
+      </a>
+    </div>
+  </div>
+</body>
