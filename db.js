@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-let dbURI =
-  "mongodb+srv://test:test@cluster0.aktgqej.mongodb.net/adoption?retryWrites=true&w=majority&appName=Cluster0";
 
 module.exports = {
   connectToDb: async () => {
